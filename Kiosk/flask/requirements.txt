@@ -1,0 +1,8 @@
+Flask
+Flask-Cors
+torch
+transformers
+mysqlclient
+scipy
+pymysql==1.0.2
+cryptography
