@@ -131,7 +131,7 @@ const Updatequestionmodal = ({ onClose , questionData}) => {
                         <div className="one-group-horizontal">
                             <div className="input-group">
                             <label>Type</label>
-                                <select name="Type" id="Type" value={formAnswer.type} onChange={handleSelectChange}>
+                                <select required name="Type" id="Type" value={formAnswer.type} onChange={handleSelectChange}>
                                     <option value="">Select Type</option>
                                     <option value="Choice">Choice</option>
                                     <option value="YesNo">Yes/No</option>

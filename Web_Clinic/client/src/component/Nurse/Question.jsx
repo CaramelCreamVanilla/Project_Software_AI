@@ -170,6 +170,10 @@ function Question() {
         }
     }
 
+    const test = async () =>{
+        await axios.get('http://192.168.15.186:5558/testAPI')
+    }
+
   return (
     <div className={mainClass}>
         <div className="main-content">

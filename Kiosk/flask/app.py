@@ -46,8 +46,9 @@ def SpeechSynthesis(q_id , text):
 #--------------------------------Model------------------------------
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'ICE_MENTOS'
+# app.config['SECRET_KEY'] = 'ICE_MENTOS'
 CORS(app)
+# CORS(app, resources={r"*": {"origins": "http://152.42.189.176:5556"}})
 
 @app.route('/testAPI' , methods=['GET'])
 def testAPI():

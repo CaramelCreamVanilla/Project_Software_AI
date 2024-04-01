@@ -156,7 +156,7 @@ const Addusermodal = ({ onClose }) => {
                             </div>
                             <div className="input-group">
                                 <label>Gender</label>
-                                <select name="gender" id="gender" value={formData.gender} onChange={handleChange}>
+                                <select required name="gender" id="gender" value={formData.gender} onChange={handleChange}>
                                     <option value="">Select Gender</option>
                                     <option value="M">Male</option>
                                     <option value="F">Female</option>
