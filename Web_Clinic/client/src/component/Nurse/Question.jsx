@@ -159,7 +159,7 @@ function Question() {
             // console.log(q_id)
             const res = await axios.delete(`${import.meta.env.VITE_API}/question/delete_question/${q_id}`)
             const filename = `q_${q_id}_speech.wav`
-            await axios.post('http://localhost:5558/deleteFile', {filename}) //flask
+            await axios.post('http://192.168.15.229:5558/deleteFile', {filename}) //flask
             setAgian(true)
             if(res.status === 204){
                 return true
@@ -171,7 +171,8 @@ function Question() {
     }
 
     const test = async () =>{
-        await axios.get('http://192.168.15.186:5558/testAPI')
+        const res = await axios.get('http://192.168.15.229:5558/testAPI')
+	console.log(res)
     }
 
   return (
@@ -180,6 +181,7 @@ function Question() {
             <div className="head-title">
                 <div className="left">
                     <h1>Question</h1>
+		    <button onClick={test} >test</button>
                     <ul className="breadcrumb">
                         <li>
                             <a href="#">Home</a>

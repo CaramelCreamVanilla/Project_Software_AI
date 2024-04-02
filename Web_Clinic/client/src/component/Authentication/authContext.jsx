@@ -109,7 +109,7 @@ export const AuthProvider = ({ children }) => {
   const sysnthesis = async (q_row , question) =>{
     try{
       // console.log(import.meta.env.FLASK_API)
-      await axios.post('http://backend:5558/synthesis', {q_row , question})//flask/
+      await axios.post('http://192.168.15.229:5558/synthesis', {q_row , question})//flask/
     }catch(error){
       console.error('Error create voice question:', error);
     }
