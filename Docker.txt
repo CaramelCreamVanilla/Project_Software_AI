@@ -1,0 +1,157 @@
+WEB_Front : 5556:5556
+WEB_Backend : 5555:5555
+phpmyadmin : 8000:80
+db : 9906:3306
+kiosk_front : 5557
+kiosk_back : 5558
+jsonserver : 5559
+
+
+for jsonserver : json-server --watch blood_pressure.json --port 5559
+
+-------------------Dockerfile Server web-----------------------
+FROM node:16
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["node", "server.js"]
+-------------------Dockerfile Server web -----------------------
+
+-------------------Dockerfile Client web-----------------------
+FROM node:16
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+RUN npm install -g serve
+
+EXPOSE 4000
+
+CMD ["serve", "-s", "dist", "-p", "4000"]
+-------------------Dockerfile Client web-----------------------
+
+-------------------doker-compose.yml web-----------------------
+version: '3.3'
+services:
+  server:
+    build: ./server
+    container_name: server_api_c
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules 
+    depends_on:
+      - db 
+    
+
+  react:
+    build: ./client
+    container_name: myreactapp_c
+    ports:
+      - '4000:4000'
+    volumes:
+      - ./react:/usr/src/app
+      - /usr/src/app/node_modules 
+    stdin_open: true
+    tty: true
+    depends_on:
+      - server
+  db:
+    container_name: db
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: MYSQL_ROOT_PASSWORD
+      MYSQL_DATABASE: smart_clinic
+      MYSQL_USER: MYSQL_USER
+      MYSQL_PASSWORD: MYSQL_PASSWORD
+    ports:
+      - "9906:3306"
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8000:80"
+    restart: always
+    environment:
+      PMA_HOST: db
+    depends_on:
+      - db
+
+volumes:
+  db_data: {}
+-------------------doker-compose.yml web-----------------------
+
+-------------------env. serverside -----------------------
+ENV_PORT = 3000
+
+ENV_DB_HOST = 'db'
+ENV_DB_USER = 'root'
+ENV_DB_PASS = 'MYSQL_ROOT_PASSWORD'
+ENV_DB_DATABASE = 'smart_clinic'
+-------------------env. serverside -----------------------
+
+-------------------dockerfile front kiosk -----------------------
+FROM node:16
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+RUN npm install -g serve
+
+EXPOSE 5000
+
+CMD ["serve", "-s", "dist", "-p", "5000"]
+
+-------------------dockerfile front kiosk -----------------------
+
+-------------------dockerfile jsonserver  -----------------------
+# Use a lightweight Node.js image
+FROM node:alpine
+
+# Set working directory inside the container
+WORKDIR /app
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install JSON Server
+RUN npm install -g json-server
+
+# Copy your JSON data file into the container
+COPY blood_pressure.json .
+
+# Expose port 5002 (or any other port you're using)
+EXPOSE 5002
+
+# Run JSON Server when the container starts
+CMD ["json-server", "--watch", "blood_pressure.json", "--port", "5002"]
+
+-------------------dockerfile jsonserver  -----------------------
+
+
+
+
+
